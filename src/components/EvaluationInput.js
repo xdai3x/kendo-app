@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { addEvaluation, getAllStudents } from '../services/api';
+import config from '../config'; // ← 追加
 import './EvaluationInput.css';
 
 const EvaluationInput = ({ onSuccess }) => {
@@ -42,6 +43,13 @@ const EvaluationInput = ({ onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // 管理者認証を追加
+    const password = prompt('指導者パスワードを入力してください:');
+    if (password !== config.TEACHER_PASSWORD) {
+      setError('パスワードが間違っています');
+      return;
+    }
     
     if (!selectedStudentId) {
       setError('生徒を選択してください');

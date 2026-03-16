@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllStudents, addStudent } from '../services/api';
 import AddStudentModal from './AddStudentModal';
+import config from '../config';  // ← この行を追加
 import './StudentList.css';
 
 const StudentList = ({ onSelectStudent }) => {
@@ -30,6 +31,15 @@ const StudentList = ({ onSelectStudent }) => {
   const handleAddStudent = async (name, grade) => {
     await addStudent(name, grade);
     await loadStudents(); // 一覧を再読み込み
+  };
+
+  const handleAddStudentClick = () => {
+    const password = prompt('指導者パスワードを入力してください:');
+    if (password === config.TEACHER_PASSWORD) {
+      setShowAddModal(true);
+    } else {
+      alert('パスワードが間違っています');
+    }
   };
 
   if (loading) {
@@ -80,9 +90,9 @@ const StudentList = ({ onSelectStudent }) => {
       <div className="add-student-section">
         <button 
           className="add-student-btn" 
-          onClick={() => setShowAddModal(true)}
+          onClick={handleAddStudentClick} // ← 変更
         >
-          ➕ 生徒を追加
+          ➕Add
         </button>
       </div>
 
