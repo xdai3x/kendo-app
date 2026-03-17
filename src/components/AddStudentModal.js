@@ -61,6 +61,9 @@ const AddStudentModal = ({ onClose, onSuccess }) => {
               <option value="4">4年生</option>
               <option value="5">5年生</option>
               <option value="6">6年生</option>
+              <option value="7">中1</option>
+              <option value="8">中2</option>
+              <option value="9">中3</option>
             </select>
           </div>
           

@@ -91,7 +91,11 @@ const EvaluationHistory = () => {
         >
           {students.map(student => (
             <option key={student.userId} value={student.userId}>
-              {student.name} ({student.grade}年生)
+              {student.name} (
+              {student.grade >= 7
+                ? `中学${student.grade - 6}`
+                : `${student.grade}`}
+                年生)
             </option>
           ))}
         </select>

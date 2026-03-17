@@ -84,14 +84,14 @@ const StudentDetail = ({ userId, onBack }) => {
     <div className="student-detail">
       {/* 戻るボタン */}
       <button className="back-button" onClick={onBack}>
-        ← 生徒一覧に戻る
+        一覧に戻る
       </button>
 
       <div className="profile-header">
         <div className="avatar-section">
           <div className="avatar-circle">⚔️</div>
           <h1>{profile.name}</h1>
-          <p className="grade-info">{profile.grade}年生</p>
+          <p className="grade-info">{profile.grade >= 7 ? `中学${profile.grade - 6}` : `${profile.grade}`}年生</p>
         </div>
         
         <div className="rank-card">

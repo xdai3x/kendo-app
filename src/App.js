@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import StudentList from './components/StudentList';
 import StudentDetail from './components/StudentDetail';
-import EvaluationInput from './components/EvaluationInput';
 import EvaluationHistory from './components/EvaluationHistory';
+import AdminPanel from './components/AdminPanel';
+import config from './config';
 import './App.css';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successData, setSuccessData] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleSelectStudent = (userId) => {
     setSelectedStudentId(userId);
@@ -22,9 +24,20 @@ function App() {
     setActiveTab('list');
   };
 
-  const handleEvaluationSuccess = (data) => {
-    setSuccessData(data);
-    setShowSuccessModal(true);
+  const handleAdminClick = () => {
+    const password = prompt('パスワードを入力してください:');
+    if (password === config.TEACHER_PASSWORD) {
+      setIsAuthenticated(true);
+      setActiveTab('admin');
+    } else {
+      alert('パスワードが間違っています');
+    }
+  };
+
+  const handleBackFromAdmin = () => {
+    setIsAuthenticated(false);
+    setActiveTab('list');
+    setRefreshKey(prev => prev + 1); // データを再読み込み
   };
 
   const closeModal = () => {
@@ -36,8 +49,8 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>⚔️ 剣道教室アプリ</h1>
-        <p>生徒の成長を可視化しよう</p>
+        <h1>⚔️ 三原台剣友会成長記録（試運転中） ⚔️</h1>
+        <p></p>
       </header>
 
       <nav className="app-nav">
@@ -45,13 +58,7 @@ function App() {
           className={activeTab === 'list' || activeTab === 'detail' ? 'active' : ''}
           onClick={() => setActiveTab('list')}
         >
-          生徒一覧
-        </button>
-        <button
-          className={activeTab === 'evaluate' ? 'active' : ''}
-          onClick={() => setActiveTab('evaluate')}
-        >
-          評価入力
+          一覧
         </button>
         <button
           className={activeTab === 'history' ? 'active' : ''}
@@ -59,11 +66,20 @@ function App() {
         >
           履歴
         </button>
+        <button
+          className={activeTab === 'evaluate' ? 'active' : ''}
+          onClick={() => setActiveTab('evaluate')}
+        >
+          記録入力
+        </button>
       </nav>
 
       <main className="app-main">
         {activeTab === 'list' && (
-          <StudentList onSelectStudent={handleSelectStudent} />
+          <StudentList 
+            key={refreshKey}
+            onSelectStudent={handleSelectStudent} 
+          />
         )}
         {activeTab === 'detail' && selectedStudentId && (
           <StudentDetail 
@@ -72,11 +88,11 @@ function App() {
             onBack={handleBackToList}
           />
         )}
-        {activeTab === 'evaluate' && (
-          <EvaluationInput onSuccess={handleEvaluationSuccess} />
-        )}
         {activeTab === 'history' && (
           <EvaluationHistory key={refreshKey} />
+        )}
+        {activeTab === 'admin' && isAuthenticated && (
+          <AdminPanel onBack={handleBackFromAdmin} />
         )}
       </main>
 

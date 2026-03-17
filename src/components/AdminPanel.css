@@ -1,0 +1,148 @@
+.admin-panel {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.admin-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.admin-header .back-button {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.admin-header .back-button:hover {
+  background: white;
+  color: #667eea;
+}
+
+.success-banner {
+  background: #4caf50;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-weight: bold;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-nav {
+  display: flex;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 0 20px;
+}
+
+.admin-nav button {
+  flex: 1;
+  padding: 15px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 16px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.admin-nav button:hover {
+  color: #667eea;
+  background: #f8f9fa;
+}
+
+.admin-nav button.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+  background: #f8f9fa;
+}
+
+.admin-content {
+  padding: 30px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.add-student-section {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.add-student-section h2 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.add-student-section .description {
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.add-student-btn-large {
+  padding: 20px 50px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.add-student-btn-large:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-nav {
+    padding: 0;
+  }
+
+  .admin-nav button {
+    font-size: 14px;
+  }
+
+  .add-student-section {
+    padding: 30px 20px;
+  }
+}
