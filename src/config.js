@@ -7,7 +7,7 @@ const config = {
   DEFAULT_USER_ID: 'test001',
 
   // 指導者用パスワード（実際の運用では環境変数で管理）
-  TEACHER_PASSWORD: '0302' // ← 好きなパスワードに変更
+  TEACHER_PASSWORD: 'kendo2026' // ← 好きなパスワードに変更
 };
 
 export default config;
