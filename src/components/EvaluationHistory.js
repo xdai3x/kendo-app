@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUserProfile, getAllStudents } from '../services/api';
+import { getUserProfile, getAllStudents, markAsRead } from '../services/api';
 import './EvaluationHistory.css';
 
 const EvaluationHistory = () => {
@@ -44,6 +44,26 @@ const EvaluationHistory = () => {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // 既読チェックの処理
+  const handleReadToggle = async (evaluationId, currentIsRead) => {
+    try {
+      const newIsRead = !currentIsRead;
+      await markAsRead(evaluationId, newIsRead);
+      
+      // ローカルの状態を更新
+      setEvaluations(prevEvaluations => 
+        prevEvaluations.map(evaluation => 
+          evaluation.evaluationId === evaluationId
+            ? { ...evaluation, isRead: newIsRead }
+            : evaluation
+        )
+      );
+    } catch (error) {
+      console.error('Error toggling read status:', error);
+      alert('既読状態の更新に失敗しました');
     }
   };
 
@@ -147,9 +167,17 @@ const EvaluationHistory = () => {
 
           <div className="history-list">
             {evaluations.map((evaluation, index) => (
-              <div key={evaluation.evaluationId || index} className="history-item">
+              <div 
+                key={evaluation.evaluationId || index} 
+                className={`history-item ${evaluation.isRead ? 'read' : 'unread'}`}
+              >
                 <div className="history-item-header">
-                  <h3>{formatDate(evaluation.date)}</h3>
+                  <div className="header-left">
+                    <h3>{formatDate(evaluation.date)}</h3>
+                    {!evaluation.isRead && (
+                      <span className="unread-badge">未読</span>
+                    )}
+                  </div>
                   <div 
                     className="total-badge"
                     style={{ backgroundColor: getScoreColor(evaluation.totalScore / 5) }}
@@ -212,6 +240,21 @@ const EvaluationHistory = () => {
                     <p>{evaluation.teacherComment}</p>
                   </div>
                 )}
+
+                {/* 既読チェックボックス */}
+                <div className="read-checkbox-container">
+                  <label className="read-checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={evaluation.isRead || false}
+                      onChange={() => handleReadToggle(
+                        evaluation.evaluationId, 
+                        evaluation.isRead
+                      )}
+                    />
+                    <span className="checkbox-text">見ました</span>
+                  </label>
+                </div>
               </div>
             ))}
           </div>

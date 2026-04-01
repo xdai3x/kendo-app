@@ -34,19 +34,19 @@ const RadarChartView = ({ latestEvaluation, averageScores }) => {
       fullMark: 10 
     },
     { 
-      skill: '踏み込み', 
+      skill: '足さばき', 
       latest: latestEvaluation.scores.footwork,
       average: averageScores?.footwork || 0,
       fullMark: 10 
     },
     { 
-      skill: '防具', 
+      skill: '着装（道着袴、防具）', 
       latest: latestEvaluation.scores.armor,
       average: averageScores?.armor || 0,
       fullMark: 10 
     },
     { 
-      skill: '礼儀', 
+      skill: '礼儀作法', 
       latest: latestEvaluation.scores.manner,
       average: averageScores?.manner || 0,
       fullMark: 10 

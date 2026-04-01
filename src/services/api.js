@@ -62,4 +62,18 @@ export const addStudent = async (name, grade) => {
   }
 };
 
+// 評価を既読にする
+export const markAsRead = async (evaluationId, isRead) => {
+  try {
+    const response = await api.post('/mark-read', {
+      evaluationId,
+      isRead
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error marking as read:', error);
+    throw error;
+  }
+};
+
 export default api;

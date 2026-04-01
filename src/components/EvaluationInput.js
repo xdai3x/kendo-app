@@ -74,8 +74,8 @@ const EvaluationInput = ({ onSuccess }) => {
   const categories = [
     { key: 'voice', label: '声の大きさ' },
     { key: 'swing', label: '素振りの正確さ' },
-    { key: 'footwork', label: '踏み込み足の上手さ' },
-    { key: 'armor', label: '防具のつけ方' },
+    { key: 'footwork', label: '足さばき' },
+    { key: 'armor', label: '着装（道着袴、防具）' },
     { key: 'manner', label: '礼儀作法' }
   ];
 
