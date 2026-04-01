@@ -206,7 +206,7 @@ const EvaluationHistory = () => {
                     </span>
                   </div>
                   <div className="score-box">
-                    <span className="score-label">踏み込み</span>
+                    <span className="score-label">足さばき</span>
                     <span 
                       className="score-number"
                       style={{ color: getScoreColor(evaluation.scores.footwork) }}
@@ -215,7 +215,7 @@ const EvaluationHistory = () => {
                     </span>
                   </div>
                   <div className="score-box">
-                    <span className="score-label">防具</span>
+                    <span className="score-label">着装</span>
                     <span 
                       className="score-number"
                       style={{ color: getScoreColor(evaluation.scores.armor) }}
