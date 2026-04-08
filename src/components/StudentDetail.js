@@ -53,6 +53,23 @@ const StudentDetail = ({ userId, onBack }) => {
     };
   };
 
+    const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+    const weekday = weekdays[date.getDay()];
+    return `${year}年${month}月${day}日（${weekday}）`;
+  };
+
+  const getScoreColor = (score) => {
+    if (score >= 9) return '#4caf50';
+    if (score >= 7) return '#667eea';
+    if (score >= 5) return '#ffa726';
+    return '#f44336';
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -79,6 +96,8 @@ const StudentDetail = ({ userId, onBack }) => {
     : 100;
 
   const averageScores = calculateAverageScores(profile.recentEvaluations);
+  const latestEvaluation = profile.recentEvaluations?.[0];
+  const recentHistory = profile.recentEvaluations?.slice(0, 5) || [];
 
   return (
     <div className="student-detail">
@@ -127,12 +146,109 @@ const StudentDetail = ({ userId, onBack }) => {
         </div>
       </div>
 
+      {/* 最新の評価詳細 */}
+      {latestEvaluation && (
+        <div className="latest-evaluation-section">
+          <h3>📝 最新の評価</h3>
+          <div className="latest-evaluation-card">
+            <div className="evaluation-header">
+              <span className="evaluation-date">{formatDate(latestEvaluation.date)}</span>
+              <span 
+                className="evaluation-total"
+                style={{ color: getScoreColor(latestEvaluation.totalScore / 5) }}
+              >
+                {latestEvaluation.totalScore} / 50
+              </span>
+            </div>
+
+            <div className="evaluation-scores-detail">
+              <div className="score-item">
+                <span className="score-label">声の大きさ</span>
+                <div className="score-bar-container">
+                  <div 
+                    className="score-bar"
+                    style={{ 
+                      width: `${latestEvaluation.scores.voice * 10}%`,
+                      backgroundColor: getScoreColor(latestEvaluation.scores.voice)
+                    }}
+                  ></div>
+                  <span className="score-value">{latestEvaluation.scores.voice}</span>
+                </div>
+              </div>
+              <div className="score-item">
+                <span className="score-label">素振りの正確さ</span>
+                <div className="score-bar-container">
+                  <div 
+                    className="score-bar"
+                    style={{ 
+                      width: `${latestEvaluation.scores.swing * 10}%`,
+                      backgroundColor: getScoreColor(latestEvaluation.scores.swing)
+                    }}
+                  ></div>
+                  <span className="score-value">{latestEvaluation.scores.swing}</span>
+                </div>
+              </div>
+              <div className="score-item">
+                <span className="score-label">踏み込み足</span>
+                <div className="score-bar-container">
+                  <div 
+                    className="score-bar"
+                    style={{ 
+                      width: `${latestEvaluation.scores.footwork * 10}%`,
+                      backgroundColor: getScoreColor(latestEvaluation.scores.footwork)
+                    }}
+                  ></div>
+                  <span className="score-value">{latestEvaluation.scores.footwork}</span>
+                </div>
+              </div>
+              <div className="score-item">
+                <span className="score-label">防具のつけ方</span>
+                <div className="score-bar-container">
+                  <div 
+                    className="score-bar"
+                    style={{ 
+                      width: `${latestEvaluation.scores.armor * 10}%`,
+                      backgroundColor: getScoreColor(latestEvaluation.scores.armor)
+                    }}
+                  ></div>
+                  <span className="score-value">{latestEvaluation.scores.armor}</span>
+                </div>
+              </div>
+              <div className="score-item">
+                <span className="score-label">礼儀作法</span>
+                <div className="score-bar-container">
+                  <div 
+                    className="score-bar"
+                    style={{ 
+                      width: `${latestEvaluation.scores.manner * 10}%`,
+                      backgroundColor: getScoreColor(latestEvaluation.scores.manner)
+                    }}
+                  ></div>
+                  <span className="score-value">{latestEvaluation.scores.manner}</span>
+                </div>
+              </div>
+            </div>
+
+            {latestEvaluation.teacherComment && (
+              <div className="teacher-comment-box">
+                <div className="comment-icon">💬</div>
+                <div className="comment-content">
+                  <p className="comment-label">先生からのコメント</p>
+                  <p className="comment-text">{latestEvaluation.teacherComment}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* レーダーチャート */}
       {profile.recentEvaluations && profile.recentEvaluations.length > 0 && (
         <RadarChartView 
           latestEvaluation={profile.recentEvaluations[0]}
           averageScores={averageScores}
         />
-      )}
+      )}  
     </div>
   );
 };
