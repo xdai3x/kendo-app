@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUserProfile } from '../services/api';
+import { getUserProfile, markAsRead } from '../services/api';
 import RadarChartView from './RadarChartView';
 import './StudentDetail.css';
 
@@ -28,6 +28,27 @@ const StudentDetail = ({ userId, onBack }) => {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // 既読チェックの処理
+  const handleReadToggle = async (evaluationId, currentIsRead) => {
+    try {
+      const newIsRead = !currentIsRead;
+      await markAsRead(evaluationId, newIsRead);
+      
+      // ローカルの状態を更新
+      setProfile(prevProfile => ({
+        ...prevProfile,
+        recentEvaluations: prevProfile.recentEvaluations.map(evaluation => 
+          evaluation.evaluationId === evaluationId
+            ? { ...evaluation, isRead: newIsRead }
+            : evaluation
+        )
+      }));
+    } catch (error) {
+      console.error('Error toggling read status:', error);
+      alert('既読状態の更新に失敗しました');
     }
   };
 
@@ -233,11 +254,25 @@ const StudentDetail = ({ userId, onBack }) => {
               <div className="teacher-comment-box">
                 <div className="comment-icon">💬</div>
                 <div className="comment-content">
-                  <p className="comment-label">先生からのコメント</p>
+                  <p className="comment-label">コメント</p>
                   <p className="comment-text">{latestEvaluation.teacherComment}</p>
                 </div>
               </div>
             )}
+            {/* 既読チェックボックス */}
+            <div className={`latest-evaluation-card ${!latestEvaluation.isRead ? 'unread' : ''}`}>
+              <label className="read-checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={latestEvaluation.isRead || false}
+                  onChange={() => handleReadToggle(
+                    latestEvaluation.evaluationId, 
+                    latestEvaluation.isRead
+                  )}
+                />
+                <span className="checkbox-text">見ました</span>
+              </label>
+            </div>
           </div>
         </div>
       )}
