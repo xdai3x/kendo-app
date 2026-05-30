@@ -138,3 +138,65 @@
     align-items: flex-start;
   }
 }
+
+/* 未読バッジ */
+.student-card {
+  position: relative;
+}
+
+.unread-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #ff5722 0%, #ff9100 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
+  border: 3px solid white;
+  z-index: 10;
+  animation: pulse 2s infinite;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.unread-count {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(255, 87, 34, 0.5);
+  }
+  100% {
+    box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
+  }
+}
+
+/* 未読がある場合のカードのハイライト */
+.student-card:has(.unread-badge) {
+  border: 2px solid #ff5722;
+  background: #fff8f5;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .unread-badge {
+    width: 32px;
+    height: 32px;
+    top: -6px;
+    right: -6px;
+  }
+
+  .unread-count {
+    font-size: 16px;
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllStudents } from '../services/api';
+import { getAllStudents, getUserProfile } from '../services/api';  // ← getUserProfile を追加
 import './StudentList.css';
 
 const StudentList = ({ onSelectStudent }) => {
@@ -15,7 +15,32 @@ const StudentList = ({ onSelectStudent }) => {
     try {
       setLoading(true);
       const data = await getAllStudents();
-      setStudents(data.students || []);
+      const studentsData = data.students || [];
+      
+      // ← ここから追加：各生徒の未読評価件数を取得
+      const studentsWithUnread = await Promise.all(
+        studentsData.map(async (student) => {
+          try {
+            const profileData = await getUserProfile(student.userId);
+            const unreadCount = (profileData.recentEvaluations || []).filter(
+              evaluation => !evaluation.isRead
+            ).length;
+            return {
+              ...student,
+              unreadCount: unreadCount
+            };
+          } catch (err) {
+            console.error(`Error fetching profile for ${student.userId}:`, err);
+            return {
+              ...student,
+              unreadCount: 0
+            };
+          }
+        })
+      );
+      // ← ここまで追加
+      
+      setStudents(studentsWithUnread);
       setError(null);
     } catch (err) {
       setError('一覧の読み込みに失敗しました');
@@ -56,6 +81,14 @@ const StudentList = ({ onSelectStudent }) => {
             className="student-card"
             onClick={() => onSelectStudent(student.userId)}
           >
+
+            {/* 未読バッジ */}
+            {student.unreadCount > 0 && (
+              <div className="unread-badge">
+                未読<span className="unread-count">{student.unreadCount}</span>件
+              </div>
+            )}
+            
             <div className="student-avatar">
               <span className="avatar-icon">
                 {student.grade >= 4 ? '🐥' : '🐣'}
