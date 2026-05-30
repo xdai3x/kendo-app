@@ -85,7 +85,7 @@ const StudentList = ({ onSelectStudent }) => {
             {/* 未読バッジ */}
             {student.unreadCount > 0 && (
               <div className="unread-badge">
-                未読<span className="unread-count">{student.unreadCount}</span>件
+                {student.unreadCount}
               </div>
             )}
             
